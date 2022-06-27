@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,17 @@ public class FactoryLine : MonoBehaviour
     {
         startPoint = transform.GetComponentsInChildren<Transform>().First(x => x.name == "startPoint");
         endPoint = transform.GetComponentsInChildren<Transform>().First(x => x.name == "endPoint");
+    }
+
+    public void SpawnNewItem()
+    {
         activeItems.Add(GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity));
     }
 
     private void Update()
     {
         MoveItems(Time.deltaTime);
-        RespawnAll();
+        // RespawnAll();
 
         var itemsToUpdate = activeItems.ToArray();
         foreach (var item in itemsToUpdate) {
@@ -50,6 +55,11 @@ public class FactoryLine : MonoBehaviour
         foreach (GameObject item in activeItems) {
             item.transform.position += Vector3.right * lineSpeed * deltaTime;
         }
+    }
+
+    public FactoryItem[] GetAllActiveItems()
+    {
+        return activeItems.Select(x => x.GetComponent<FactoryItem>()).ToArray();
     }
 
     private void RespawnAll()
