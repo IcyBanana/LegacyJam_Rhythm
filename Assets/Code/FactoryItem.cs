@@ -9,7 +9,8 @@ public class FactoryItem : MonoBehaviour
     /// Conditions: Must be "worked" on a specific number of times 'n'. If worked on less or more than 'n', will be Unfinished, otherwise Finished.
     /// Can only be "worked" on when inside a worker's trigger on the line.
 
-    public enum ItemCondition {
+    public enum ItemCondition
+    {
         Finished,
         Unfinished
     }
@@ -27,28 +28,33 @@ public class FactoryItem : MonoBehaviour
     //
     // Public Methods
     // 
-    public void Tap () {
+    public void Tap()
+    {
         tapCount++;
         UpdateCondition();
     }
 
-    public ItemCondition GetCondition () {
+    public ItemCondition GetCondition()
+    {
         return myCondition;
     }
 
-    public void Reset () {    
+    public void Reset() {
+        
         tapCount = 0;
     }
 
     //
     // Private Methods
     //
-    void Start () {
+    void Start()
+    {
         UpdateCondition();
     }
 
-    void UpdateCondition () {
-        if(tapCount == requiredTaps)  
+    void UpdateCondition()
+    {
+        if (tapCount == requiredTaps)
             myCondition = ItemCondition.Finished;
         else
             myCondition = ItemCondition.Unfinished;

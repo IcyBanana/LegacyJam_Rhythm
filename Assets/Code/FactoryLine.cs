@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FactoryLine : MonoBehaviour
@@ -11,48 +12,70 @@ public class FactoryLine : MonoBehaviour
     /// Destroys/Pools items that reach the end of the line and checks their status.
 
     [SerializeField]
-    private Transform startPoint;
-    [SerializeField]
     private GameObject itemPrefab;
     [SerializeField]
     private float lineSpeed = 1f;
 
+    private Transform startPoint;
+    private Transform endPoint;
+    
     private List<GameObject> activeItems = new List<GameObject>();
     private List<GameObject> inactiveItems = new List<GameObject>();
 
-    void Start () {
+    private void Start()
+    {
+        startPoint = transform.GetComponentsInChildren<Transform>().First(x => x.name == "startPoint");
+        endPoint = transform.GetComponentsInChildren<Transform>().First(x => x.name == "endPoint");
         activeItems.Add(GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity));
     }
 
-    void Update () {
+    private void Update()
+    {
         MoveItems(Time.deltaTime);
-        Respawn();
+        RespawnAll();
+
+        var itemsToUpdate = activeItems.ToArray();
+        foreach (var item in itemsToUpdate) {
+
+            if (item.transform.position.x >= endPoint.position.x) {
+                DisableItem(item);
+            }
+        }
     }
 
-    void MoveItems (float deltaTime) {
-        if(activeItems.Count <= 0)
+    private void MoveItems(float deltaTime)
+    {
+        if (activeItems.Count <= 0)
             return;
-        foreach(GameObject item in activeItems) {
+        foreach (GameObject item in activeItems) {
             item.transform.position += Vector3.right * lineSpeed * deltaTime;
         }
     }
 
-    void Respawn () {
-        if(inactiveItems.Count <= 0)
+    private void RespawnAll()
+    {
+        if (inactiveItems.Count <= 0)
             return;
-        foreach(GameObject item in inactiveItems) {
-            activeItems.Add(item);
-            item.SetActive(true);
-            item.transform.position = startPoint.position;
+
+        var toEnable = inactiveItems.ToArray();
+        foreach (GameObject item in toEnable) {
+            RespawnItem(item);
         }
-        inactiveItems.Clear();
     }
 
-    void OnTriggerEnter2D (Collider2D col) {
-        print("TRIGGER ENTERED");
-        col.GetComponent<FactoryItem>().Reset();
-        activeItems.Remove(col.gameObject);
-        inactiveItems.Add(col.gameObject);
-        col.gameObject.SetActive(false);
+    private void RespawnItem(GameObject item)
+    {
+        activeItems.Add(item);
+        inactiveItems.Remove(item);
+        item.SetActive(true);
+        item.transform.position = startPoint.position;
+    }
+    
+    private void DisableItem(GameObject item)
+    {
+        item.GetComponent<FactoryItem>().Reset();
+        activeItems.Remove(item);
+        inactiveItems.Add(item);
+        item.SetActive(false);
     }
 }
