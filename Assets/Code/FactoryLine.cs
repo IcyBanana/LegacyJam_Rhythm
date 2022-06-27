@@ -31,7 +31,13 @@ public class FactoryLine : MonoBehaviour
 
     public void SpawnNewItem()
     {
-        activeItems.Add(GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity));
+        var item = GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity);
+        activeItems.Add(item);
+        var color = new Color(1f, 1f, 1f, 1f);
+        color.r = UnityEngine.Random.Range(0f, 1f);
+        color.g = UnityEngine.Random.Range(0f, 1f);
+        color.b = UnityEngine.Random.Range(0f, 1f);
+        item.GetComponent<SpriteRenderer>().color = color;
     }
 
     private void Update()
