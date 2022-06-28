@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class SyncGame : MonoBehaviour
 {
-    // blah input
     [SerializeField]
-    private List<PlaybackEvent> eventsInput;
+    private MidiScriptableObj[] midiDataArray;
+
+    private List<PlaybackEvent> eventsInput = new List<PlaybackEvent>();
 
     // config
     [SerializeField]
@@ -18,17 +19,36 @@ public class SyncGame : MonoBehaviour
     private PlaybackEvent[] events;
 
     // deps
+    [SerializeField]
     private FactoryLine[] factoryLines;
+
     private GameObject[] factoryWorkers;
 
     // gameplay status
     private float fakePlayback;
     private int nextEventIndex;
 
+    // Gets float array of note start times and line identifier and creates the eventsInput list.
+    public void WritePlaybackEvents (List<float> noteTimes, int line) { 
+        foreach(float noteTime in noteTimes) {
+            PlaybackEvent playbackEvent = new PlaybackEvent();
+            playbackEvent.time = noteTime;
+            playbackEvent.type = PlaybackEventType.SpawnInLine;
+            playbackEvent.arg1 = line;
+
+            eventsInput.Add(playbackEvent);
+        }
+    }
+
 
     // Start is called before the first frame update
     private void Start()
     {
+        eventsInput.Clear();
+        foreach(MidiScriptableObj midiData in midiDataArray) {
+            WritePlaybackEvents(midiData.noteStartTimes, midiData.typeID);
+        }
+        SortEventsAscending();
         events = eventsInput.ToArray();
 
         factoryLines = FindObjectsOfType<FactoryLine>();
@@ -36,17 +56,7 @@ public class SyncGame : MonoBehaviour
             .Where(x => x.name == "factoryWorker")
             .ToArray();
 
-        foreach (var worker in factoryWorkers)
-        {
-            var color = worker.GetComponent<SpriteRenderer>().color;
-            var allSprites = worker.GetComponentsInChildren<SpriteRenderer>();
-            foreach (var sprite in allSprites)
-            {
-                sprite.color = color;
-            }
-        }
-
-        fakePlayback = 0f;
+        fakePlayback = -1f;
         nextEventIndex = 0;
     }
 
@@ -81,6 +91,7 @@ public class SyncGame : MonoBehaviour
         }
     }
 
+    private int loopCount = 0;
     private void MaybeStartNextEvent()
     {
         if (nextEventIndex >= events.Length) {
@@ -93,6 +104,9 @@ public class SyncGame : MonoBehaviour
         if (time >= nextEvent.time) {
             StartEvent(nextEvent);
             nextEventIndex++;
+            loopCount++;
+            if(loopCount < 10000)
+                MaybeStartNextEvent();
         }
     }
 
@@ -114,5 +128,12 @@ public class SyncGame : MonoBehaviour
     private FactoryItem[] GetAllActiveItems()
     {
         return factoryLines.SelectMany(line => line.GetAllActiveItems()).ToArray();
+    }
+
+    private void SortEventsAscending () { // Sort playback events by note timings. (Ascending)
+        eventsInput.Sort(CompareNoteTimes);
+    }
+    public static int CompareNoteTimes (PlaybackEvent event1, PlaybackEvent event2) {
+        return event1.time.CompareTo(event2.time);
     }
 }
