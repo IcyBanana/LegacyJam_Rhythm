@@ -36,6 +36,16 @@ public class SyncGame : MonoBehaviour
             .Where(x => x.name == "factoryWorker")
             .ToArray();
 
+        foreach (var worker in factoryWorkers)
+        {
+            var color = worker.GetComponent<SpriteRenderer>().color;
+            var allSprites = worker.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var sprite in allSprites)
+            {
+                sprite.color = color;
+            }
+        }
+
         fakePlayback = 0f;
         nextEventIndex = 0;
     }
