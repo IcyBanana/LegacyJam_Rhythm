@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,52 +12,51 @@ public class FactoryItem : MonoBehaviour
 
     public enum ItemCondition
     {
+        Raw,
         Finished,
-        Unfinished
+        Ruined,
     }
 
     [SerializeField]
     private ItemCondition myCondition;
 
     [SerializeField]
-    private int requiredTaps = 1;
-    [SerializeField]
-    private int tapCount = 0; // How many times this item has been worked on.
-    [SerializeField]
     private SpriteRenderer spriteRenderer;
-    
+
     //
     // Public Methods
     // 
-    public void Tap()
-    {
-        tapCount++;
-        UpdateCondition();
-    }
 
     public ItemCondition GetCondition()
     {
         return myCondition;
     }
 
-    public void Reset() {
-        
-        tapCount = 0;
+    public void Reset()
+    {
+        myCondition = ItemCondition.Raw;
     }
 
     //
     // Private Methods
     //
-    void Start()
+    public void Start()
     {
-        UpdateCondition();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Reset();
     }
 
-    void UpdateCondition()
+    public void AdvanceCondition()
     {
-        if (tapCount == requiredTaps)
+        if (myCondition == ItemCondition.Raw)
+        {
             myCondition = ItemCondition.Finished;
-        else
-            myCondition = ItemCondition.Unfinished;
+            spriteRenderer.color = Color.green;
+        }
+        else if (myCondition == ItemCondition.Finished)
+        {
+            myCondition = ItemCondition.Ruined;
+            spriteRenderer.color = Color.red;
+        }
     }
 }

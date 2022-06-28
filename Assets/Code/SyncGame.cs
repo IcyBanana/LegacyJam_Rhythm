@@ -7,6 +7,9 @@ using UnityEngine;
 public class SyncGame : MonoBehaviour
 {
     [SerializeField]
+    private float workerCooldownTime;
+
+    [SerializeField]
     private MidiScriptableObj[] midiDataArray;
 
     private List<PlaybackEvent> eventsInput = new List<PlaybackEvent>();
@@ -21,15 +24,17 @@ public class SyncGame : MonoBehaviour
     // deps
     [SerializeField]
     private FactoryLine[] factoryLines;
-
-    private GameObject[] factoryWorkers;
+    
+    [SerializeField]
+    private FactoryWorker[] factoryWorkers;
 
     // gameplay status
     private float fakePlayback;
     private int nextEventIndex;
 
     // Gets float array of note start times and line identifier and creates the eventsInput list.
-    public void WritePlaybackEvents (List<float> noteTimes, int line) { 
+    public void WritePlaybackEvents (List<float> noteTimes, int line)
+    { 
         foreach(float noteTime in noteTimes) {
             PlaybackEvent playbackEvent = new PlaybackEvent();
             playbackEvent.time = noteTime;
@@ -51,11 +56,6 @@ public class SyncGame : MonoBehaviour
         SortEventsAscending();
         events = eventsInput.ToArray();
 
-        factoryLines = FindObjectsOfType<FactoryLine>();
-        factoryWorkers = FindObjectsOfType<GameObject>()
-            .Where(x => x.name == "factoryWorker")
-            .ToArray();
-
         fakePlayback = -1f;
         nextEventIndex = 0;
     }
@@ -65,8 +65,16 @@ public class SyncGame : MonoBehaviour
     {
         fakePlayback += Time.deltaTime;
 
+        var time = GetPlaybackTime();
+
         MaybeStartNextEvent();
 
+        foreach (FactoryWorker worker in factoryWorkers)
+        {
+            if (!worker.OnCooldown(time)) {
+                EndCooldown(worker);
+            }
+        }
 
         var activateWorkerIndex = -1;
         if (Input.GetKeyDown(KeyCode.Q)) { activateWorkerIndex = 0; }
@@ -77,16 +85,34 @@ public class SyncGame : MonoBehaviour
         
         if (activateWorkerIndex != -1) {
             var worker = factoryWorkers[activateWorkerIndex];
-            foreach (var item in items) {
-                var toWorker = item.transform.position - worker.transform.position;
-                if (toWorker.magnitude <= workerActivateDistance) {
-                    // item.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-                    var color = new Color(1f, 1f, 1f, 1f);
-                    color.r = UnityEngine.Random.Range(0f, 1f);
-                    color.g = UnityEngine.Random.Range(0f, 1f);
-                    color.b = UnityEngine.Random.Range(0f, 1f);
-                    item.GetComponent<SpriteRenderer>().color = color;
+            
+            var itemToActivate = (FactoryItem)null;
+            if (!worker.OnCooldown(time))
+            {
+                foreach (var item in items)
+                {
+                    var toWorker = item.transform.position - worker.transform.position;
+                    if (toWorker.magnitude <= workerActivateDistance)
+                    {
+                        itemToActivate = item;
+                    }
                 }
+            }
+
+            if (itemToActivate) {
+                itemToActivate.AdvanceCondition();
+                //var color = new Color(1f, 1f, 1f, 1f);
+                //color.r = UnityEngine.Random.Range(0f, 1f);
+                //color.g = UnityEngine.Random.Range(0f, 1f);
+                //color.b = UnityEngine.Random.Range(0f, 1f);
+                //itemToActivate.GetComponent<SpriteRenderer>().color = color;
+                var toItem = itemToActivate.transform.position - worker.transform.position;
+                if (toItem.y < 0) {
+                    worker.transform.rotation = Quaternion.Euler(0, 0, 180);
+                } else {
+                    worker.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+                StartCooldown(worker);
             }
         }
     }
@@ -128,6 +154,16 @@ public class SyncGame : MonoBehaviour
     private FactoryItem[] GetAllActiveItems()
     {
         return factoryLines.SelectMany(line => line.GetAllActiveItems()).ToArray();
+    }
+
+    private void StartCooldown(FactoryWorker worker)
+    {
+        worker.transform.localScale = new Vector3(0.4f, 1f, 1f);
+        worker.cooldownUntil = GetPlaybackTime() + workerCooldownTime;
+    }
+    private void EndCooldown(FactoryWorker worker)
+    {
+        worker.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void SortEventsAscending () { // Sort playback events by note timings. (Ascending)
