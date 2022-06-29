@@ -24,6 +24,12 @@ public class FactoryLine : MonoBehaviour
     // Status;
     private List<FactoryItem> activeItems = new List<FactoryItem>();
     private List<FactoryItem> inactiveItems = new List<FactoryItem>();
+    private GameConfig config;
+
+    public void Init(GameConfig config)
+    {
+        this.config = config;
+    }
 
     private void Start()
     {
@@ -34,7 +40,9 @@ public class FactoryLine : MonoBehaviour
     public void SpawnNewItem()
     {
         var itemGameObject = GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity);
-        activeItems.Add(itemGameObject.GetComponent<FactoryItem>());
+        var item = itemGameObject.GetComponent<FactoryItem>();
+        item.Init(config);
+        activeItems.Add(item);
         
         //var color = new Color(1f, 1f, 1f, 1f);
         //color.r = UnityEngine.Random.Range(0f, 1f);

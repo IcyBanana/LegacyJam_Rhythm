@@ -15,3 +15,6 @@ MonoBehaviour:
   workerCooldownTime: 0.1
   workerActivateDistanceX: 0.9
   workerActivateDistanceY: 2
+  spriteRaw: {fileID: 21300000, guid: d59f6d5959444714fbafeb5d316db80a, type: 3}
+  spriteFinished: {fileID: 21300000, guid: 3f04cd7b75ef43d44a21efbcfa6d2906, type: 3}
+  spriteRuined: {fileID: 21300000, guid: 0e355dfbbb546974ea68c0974acb9eb1, type: 3}

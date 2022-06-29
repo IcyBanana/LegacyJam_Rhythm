@@ -16,10 +16,21 @@ public class FactoryItem : MonoBehaviour
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
+    private GameConfig config;
+
     //
     // Public Methods
     // 
 
+    public void Init(GameConfig config)
+    {
+        this.config = config;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Reset();
+        
+        UpdateItemGraphics();
+    }
+    
     public ItemCondition GetCondition()
     {
         return myCondition;
@@ -30,33 +41,23 @@ public class FactoryItem : MonoBehaviour
         myCondition = ItemCondition.Raw;
     }
 
-    //
-    // Private Methods
-    //
-    public void Start()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        Reset();
-    }
-
     public void AdvanceCondition()
     {
         if (myCondition == ItemCondition.Raw)
         {
             myCondition = ItemCondition.Finished;
-            spriteRenderer.color = Color.green;
+            // spriteRenderer.color = Color.green;
         }
         else if (myCondition == ItemCondition.Finished)
         {
             myCondition = ItemCondition.Ruined;
-            spriteRenderer.color = Color.red;
+            // spriteRenderer.color = Color.red;
         }
+        UpdateItemGraphics();
     }
-}
 
-public enum ItemCondition
-{
-    Raw,
-    Finished,
-    Ruined,
+    private void UpdateItemGraphics()
+    {
+        spriteRenderer.sprite = config.GetSprite(myCondition);
+    }
 }
