@@ -5,7 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/GameConfig", order = 1)]
 public class GameConfig : ScriptableObject
 {
+    [Header("Prefabs")]
+    public GameObject itemPrefab;
+
     [Header("Gameplay and balance")]
+    public float factoryLineSpeed;
     public float workerCooldownTime;
     public float workerActivateDistanceX;
     public float workerActivateDistanceY;

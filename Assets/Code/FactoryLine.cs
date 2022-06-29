@@ -16,8 +16,6 @@ public class FactoryLine : MonoBehaviour
     public Action<FactoryItem> ScoreItemOnReachEnd;
 
     // Dependencies:
-    [SerializeField] private GameObject itemPrefab;
-    [SerializeField] private float lineSpeed = 1f;
     private Transform startPoint;
     private Transform endPoint;
     
@@ -39,7 +37,7 @@ public class FactoryLine : MonoBehaviour
 
     public void SpawnNewItem()
     {
-        var itemGameObject = GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity);
+        var itemGameObject = GameObject.Instantiate(config.itemPrefab, startPoint.position, Quaternion.identity);
         var item = itemGameObject.GetComponent<FactoryItem>();
         item.Init(config);
         activeItems.Add(item);
@@ -71,7 +69,7 @@ public class FactoryLine : MonoBehaviour
         if (activeItems.Count <= 0)
             return;
         foreach (var item in activeItems) {
-            item.transform.position += Vector3.right * lineSpeed * deltaTime;
+            item.transform.position += Vector3.right * config.factoryLineSpeed * deltaTime;
         }
     }
 

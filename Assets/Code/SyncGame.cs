@@ -12,7 +12,7 @@ using UnityEngine.Events;
 - [X] Score when objects get to end + score field
 - [X] Score effect when objects get to line end
 - [X] Implement FactoryItem changing graphics (swapped sprites)
-- [ ] Worker animation for processing (cloud)
+- [X] Worker animation for processing (cloud)
 - [ ] Worker animation for 180 turns
 - [ ] Intro screen with "Log In" and "Don't log in" buttons - also with help on the SCORING system
 - [ ] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
@@ -172,6 +172,7 @@ public class SyncGame : MonoBehaviour
 
                 if (itemToActivate) {
                     itemToActivate.AdvanceCondition();
+                    worker.StartWorkingOnItem();
                 }
 
                 worker.StartCooldown(time);

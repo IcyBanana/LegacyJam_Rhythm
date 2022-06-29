@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,16 +39,22 @@ public class FactoryWorker : MonoBehaviour
 
     public void StartCooldown(float currentTime)
     {
-        transform.localScale = new Vector3(0.4f, 1f, 1f);
+        // transform.localScale = new Vector3(0.4f, 1f, 1f);
         cooldownUntil = currentTime + config.workerCooldownTime;
     }
+    
     public void EndCooldown()
     {
-        transform.localScale = new Vector3(1f, 1f, 1f);
+        // transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     public bool OnCooldown(float time)
     {
         return time < cooldownUntil;
+    }
+
+    public void StartWorkingOnItem()
+    {
+        GetComponent<Animator>().SetTrigger("StartWork");
     }
 }
