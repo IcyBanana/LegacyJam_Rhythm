@@ -10,7 +10,7 @@ using UnityEngine.Events;
 
   Tasks:
 - [X] Score when objects get to end + score field
-- [ ] Score effect when objects get to line end
+- [X] Score effect when objects get to line end
 - [ ] Worker animation for processing (cloud)
 - [ ] Worker animation for 180 turns
 - [ ] Intro screen with "Log In" and "Don't log in" buttons - also with help on the SCORING system
@@ -62,7 +62,7 @@ public class SyncGame : MonoBehaviour
     {
         score = 0;
         gameUI = FindObjectOfType<GameUI>();
-        gameUI.SetScore(score);
+        gameUI.SetScoreDisplay(score);
 
         totemIntegration = new TotemIntegration();
         totemIntegration.Init();
@@ -113,11 +113,12 @@ public class SyncGame : MonoBehaviour
                 scoreToAdd = +5;
                 break;
             case ItemCondition.Ruined:
-                scoreToAdd = -8;
+                scoreToAdd = -5;
                 break;
         }
         score += scoreToAdd;
-        gameUI.SetScore(score);
+        gameUI.SetScoreDisplay(score);
+        gameUI.AddScoreEffect(scoreToAdd, item.transform.position);
     }
 
     // Update is called once per frame

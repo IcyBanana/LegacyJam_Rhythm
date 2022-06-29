@@ -147,8 +147,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131829833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.38973, y: -0.4705, z: -0.0078314}
-  m_LocalScale: {x: 0.73483, y: 0.73483, z: 0.73483}
+  m_LocalPosition: {x: -0.27, y: -0.71, z: -0.00682}
+  m_LocalScale: {x: 0.63192624, y: 0.6399253, z: 0.6399253}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 934268340}
@@ -538,6 +538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea8143f2ef321385bcd588837d64a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreEffectPrefab: {fileID: 3126333991090734169, guid: 02dc14da3df26001b8b2e36b56c1a461, type: 3}
+  scoreEffectVelocity: {x: 0, y: 5, z: 0}
   scoreField: {fileID: 1312966492}
 --- !u!114 &1189492640
 MonoBehaviour:
@@ -597,7 +599,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: 518546665
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1189492643
@@ -725,7 +727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -164.8, y: -57.9}
+  m_AnchoredPosition: {x: -164.79999, y: -57.899994}
   m_SizeDelta: {x: 320, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1312966492
