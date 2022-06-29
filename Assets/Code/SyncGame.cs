@@ -86,32 +86,34 @@ public class SyncGame : MonoBehaviour
         
         if (activateWorkerIndex != -1) {
             var worker = factoryWorkers[activateWorkerIndex];
-            
-            var itemToActivate = (FactoryItem)null;
-            if (!worker.OnCooldown(time)) {
-                foreach (var item in items) {
-                    var toWorker = item.transform.position - worker.transform.position;
-                    if (Mathf.Abs(toWorker.x) <= gameConfig.workerActivateDistanceX &&
-                        Mathf.Abs(toWorker.y) <= gameConfig.workerActivateDistanceY)
-                    {
-                        itemToActivate = item;
+
+            if (worker.OnCooldown(time)) {
+                Debug.Log("Worker is on cooldown");
+            } else {
+                worker.FlipVerticalDirection();
+                
+                var itemToActivate = (FactoryItem)null;
+                if (!worker.OnCooldown(time)) {
+                    foreach (var item in items) {
+                        var toItem = item.transform.position - worker.transform.position;
+                        if (Mathf.Abs(toItem.x) <= gameConfig.workerActivateDistanceX &&
+                            Mathf.Abs(toItem.y) <= gameConfig.workerActivateDistanceY)
+                        {
+                            if (
+                                (toItem.y < 0 && worker.verticalDirection == 1)
+                                ||
+                                (toItem.y > 0 && worker.verticalDirection == -1)
+                            ) {
+                                itemToActivate = item;
+                            }
+                        }
                     }
                 }
-            }
 
-            if (itemToActivate) {
-                itemToActivate.AdvanceCondition();
-                //var color = new Color(1f, 1f, 1f, 1f);
-                //color.r = UnityEngine.Random.Range(0f, 1f);
-                //color.g = UnityEngine.Random.Range(0f, 1f);
-                //color.b = UnityEngine.Random.Range(0f, 1f);
-                //itemToActivate.GetComponent<SpriteRenderer>().color = color;
-                var toItem = itemToActivate.transform.position - worker.transform.position;
-                if (toItem.y < 0) {
-                    worker.transform.rotation = Quaternion.Euler(0, 0, 180);
-                } else {
-                    worker.transform.rotation = Quaternion.Euler(0, 0, 0);
+                if (itemToActivate) {
+                    itemToActivate.AdvanceCondition();
                 }
+
                 worker.StartCooldown(time);
             }
         }

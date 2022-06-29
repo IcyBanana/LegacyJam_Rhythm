@@ -4,25 +4,35 @@ using UnityEngine;
 
 public class FactoryWorker : MonoBehaviour
 {
-    public float cooldownUntil;
-    
+    //deps:
     private GameConfig config;
+
+    //gameplay status:
+    public float cooldownUntil;
+    public int verticalDirection;
+
 
     public void Init(GameConfig config)
     {
         this.config = config;
+        verticalDirection = 1;
+        SetRotation();
     }
     
-    // Start is called before the first frame update
-    private void Start()
+    // Update is called once per frame
+    private void Update() { }
+
+    public void FlipVerticalDirection()
     {
-        
+        verticalDirection *= -1;
+        SetRotation();
     }
 
-    // Update is called once per frame
-    private void Update()
+
+
+    public void SetRotation()
     {
-        
+        transform.rotation = Quaternion.Euler(0, 0, 90 + verticalDirection * 90);
     }
 
 
