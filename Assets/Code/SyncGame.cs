@@ -3,16 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using TotemServices;
-using TotemEntities;
 using UnityEngine.Events;
 
 public class SyncGame : MonoBehaviour
 {
-    ///Id of your game
-    ///Used for legacy records identification
-    private string _gameId = "legacyjam22-industrial";
-    
     [SerializeField]
     private MidiScriptableObj[] midiDataArray;
 
@@ -27,7 +21,7 @@ public class SyncGame : MonoBehaviour
     [SerializeField] private FactoryWorker[] factoryWorkers;
 
     // runtime dependencies:
-    private TotemDB totemDB;
+    private TotemIntegration totemIntegration;
 
     // gameplay status
     private float fakePlayback;
@@ -51,15 +45,8 @@ public class SyncGame : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        //Initialize TotemDB
-        totemDB = new TotemDB(_gameId);
-
-        //Subscribe to the events
-        
-        //Authenticate user through social login in web browser
-        totemDB.AuthenticateCurrentUser();
-        
-        
+        //totemIntegration = new TotemIntegration();
+        //totemIntegration.Init();
 
         eventsInput.Clear();
         foreach(MidiScriptableObj midiData in midiDataArray) {
@@ -178,18 +165,5 @@ public class SyncGame : MonoBehaviour
     }
     public static int CompareNoteTimes (PlaybackEvent event1, PlaybackEvent event2) {
         return event1.time.CompareTo(event2.time);
-    }
-
-    public void AddLegacyRecord(ITotemAsset asset, string data)
-    {
-        totemDB.AddLegacyRecord(asset, data, (record) =>
-        {
-            Debug.Log("New legacy record data:" + record.data);
-        });
-    }
-
-    public void GetLegacyRecords(ITotemAsset asset, UnityAction<List<TotemLegacyRecord>> onSuccess)
-    {
-        //totemDB.GetLegacyRecords(asset, onSuccess, legacyGameIdInput.text);
     }
 }
