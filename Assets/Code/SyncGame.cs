@@ -3,9 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TotemServices;
+using TotemEntities;
+using UnityEngine.Events;
 
 public class SyncGame : MonoBehaviour
 {
+    ///Id of your game
+    ///Used for legacy records identification
+    private string _gameId = "legacyjam22-industrial";
+    
     [SerializeField]
     private MidiScriptableObj[] midiDataArray;
 
@@ -14,19 +21,18 @@ public class SyncGame : MonoBehaviour
     // events:
     private PlaybackEvent[] events;
     
-    // deps:
-    [SerializeField]
-    private GameConfig gameConfig;
+    // editor dependencies:
+    [SerializeField] private GameConfig gameConfig;
+    [SerializeField] private FactoryLine[] factoryLines;
+    [SerializeField] private FactoryWorker[] factoryWorkers;
 
-    [SerializeField]
-    private FactoryLine[] factoryLines;
-    
-    [SerializeField]
-    private FactoryWorker[] factoryWorkers;
+    // runtime dependencies:
+    private TotemDB totemDB;
 
     // gameplay status
     private float fakePlayback;
     private int nextEventIndex;
+    private int loopCount = 0;
 
     // Gets float array of note start times and line identifier and creates the eventsInput list.
     public void WritePlaybackEvents (List<float> noteTimes, int line)
@@ -45,6 +51,16 @@ public class SyncGame : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        //Initialize TotemDB
+        totemDB = new TotemDB(_gameId);
+
+        //Subscribe to the events
+        
+        //Authenticate user through social login in web browser
+        totemDB.AuthenticateCurrentUser();
+        
+        
+
         eventsInput.Clear();
         foreach(MidiScriptableObj midiData in midiDataArray) {
             WritePlaybackEvents(midiData.noteStartTimes, midiData.typeID);
@@ -119,7 +135,7 @@ public class SyncGame : MonoBehaviour
         }
     }
 
-    private int loopCount = 0;
+
     private void MaybeStartNextEvent()
     {
         if (nextEventIndex >= events.Length) {
@@ -162,5 +178,18 @@ public class SyncGame : MonoBehaviour
     }
     public static int CompareNoteTimes (PlaybackEvent event1, PlaybackEvent event2) {
         return event1.time.CompareTo(event2.time);
+    }
+
+    public void AddLegacyRecord(ITotemAsset asset, string data)
+    {
+        totemDB.AddLegacyRecord(asset, data, (record) =>
+        {
+            Debug.Log("New legacy record data:" + record.data);
+        });
+    }
+
+    public void GetLegacyRecords(ITotemAsset asset, UnityAction<List<TotemLegacyRecord>> onSuccess)
+    {
+        //totemDB.GetLegacyRecords(asset, onSuccess, legacyGameIdInput.text);
     }
 }
