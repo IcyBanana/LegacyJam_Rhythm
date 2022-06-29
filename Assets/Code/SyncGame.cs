@@ -6,6 +6,32 @@ using TotemEntities;
 using UnityEngine;
 using UnityEngine.Events;
 
+/*
+
+  Tasks:
+- [ ] Score when objects get to end + score field
+- [ ] Score effect when objects get to line end
+- [ ] Worker animation for processing (cloud)
+- [ ] Worker animation for 180 turns
+- [ ] Intro screen with "Log In" and "Don't log in" buttons
+- [ ] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
+- [ ] If getting a very bad score for a while - move into "YOU'RE FIRED" scene. Button to restart game
+- [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
+- [ ] Send the score as LEGACY EVENT when any GameOver is reached
+- [ ] Implement FactoryItem changing graphics (swapped sprites)
+- [ ] Add some FactoryItems with 4 states (not just 3)
+- [ ] Add special FactoryItems based on read legacy events from Renaissance
+- [ ] Soundtrack + Midi
+- [ ] Background art
+- [ ] Factory Line art + Animation
+----- Optional ------
+- [ ] Speed control system
+- [ ] Stun/Advanced cooldown system
+- [ ] PPFX
+- [ ] Artistic Shaders
+
+*/
+
 public class SyncGame : MonoBehaviour
 {
     [SerializeField]
