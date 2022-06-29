@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   workerCooldownTime: 0.1
-  workerActivateDistanceX: 1
+  workerActivateDistanceX: 0.9
   workerActivateDistanceY: 3
