@@ -7,21 +7,17 @@ using UnityEngine;
 public class SyncGame : MonoBehaviour
 {
     [SerializeField]
-    private float workerCooldownTime;
-
-    [SerializeField]
     private MidiScriptableObj[] midiDataArray;
 
     private List<PlaybackEvent> eventsInput = new List<PlaybackEvent>();
 
-    // config
-    [SerializeField]
-    private float workerActivateDistance;
-    
-    // events
+    // events:
     private PlaybackEvent[] events;
+    
+    // deps:
+    [SerializeField]
+    private GameConfig gameConfig;
 
-    // deps
     [SerializeField]
     private FactoryLine[] factoryLines;
     
@@ -56,6 +52,11 @@ public class SyncGame : MonoBehaviour
         SortEventsAscending();
         events = eventsInput.ToArray();
 
+        foreach (FactoryWorker factoryWorker in factoryWorkers) {
+            factoryWorker.Init(gameConfig);
+        }
+
+
         fakePlayback = -1f;
         nextEventIndex = 0;
     }
@@ -72,7 +73,7 @@ public class SyncGame : MonoBehaviour
         foreach (FactoryWorker worker in factoryWorkers)
         {
             if (!worker.OnCooldown(time)) {
-                EndCooldown(worker);
+                worker.EndCooldown();
             }
         }
 
@@ -87,12 +88,11 @@ public class SyncGame : MonoBehaviour
             var worker = factoryWorkers[activateWorkerIndex];
             
             var itemToActivate = (FactoryItem)null;
-            if (!worker.OnCooldown(time))
-            {
-                foreach (var item in items)
-                {
+            if (!worker.OnCooldown(time)) {
+                foreach (var item in items) {
                     var toWorker = item.transform.position - worker.transform.position;
-                    if (toWorker.magnitude <= workerActivateDistance)
+                    if (Mathf.Abs(toWorker.x) <= gameConfig.workerActivateDistanceX &&
+                        Mathf.Abs(toWorker.y) <= gameConfig.workerActivateDistanceY)
                     {
                         itemToActivate = item;
                     }
@@ -112,7 +112,7 @@ public class SyncGame : MonoBehaviour
                 } else {
                     worker.transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
-                StartCooldown(worker);
+                worker.StartCooldown(time);
             }
         }
     }
@@ -155,17 +155,6 @@ public class SyncGame : MonoBehaviour
     {
         return factoryLines.SelectMany(line => line.GetAllActiveItems()).ToArray();
     }
-
-    private void StartCooldown(FactoryWorker worker)
-    {
-        worker.transform.localScale = new Vector3(0.4f, 1f, 1f);
-        worker.cooldownUntil = GetPlaybackTime() + workerCooldownTime;
-    }
-    private void EndCooldown(FactoryWorker worker)
-    {
-        worker.transform.localScale = new Vector3(1f, 1f, 1f);
-    }
-
     private void SortEventsAscending () { // Sort playback events by note timings. (Ascending)
         eventsInput.Sort(CompareNoteTimes);
     }
