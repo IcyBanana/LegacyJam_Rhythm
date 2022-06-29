@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TotemEntities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -45,8 +46,9 @@ public class SyncGame : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        //totemIntegration = new TotemIntegration();
-        //totemIntegration.Init();
+        totemIntegration = new TotemIntegration();
+        totemIntegration.Init();
+        //totemIntegration.LoginUser();
 
         eventsInput.Clear();
         foreach(MidiScriptableObj midiData in midiDataArray) {
