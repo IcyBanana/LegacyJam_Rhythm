@@ -65,7 +65,7 @@ public class SyncGame : MonoBehaviour
 
         totemIntegration = new TotemIntegration();
         totemIntegration.Init();
-        //totemIntegration.LoginUser();
+        // totemIntegration.LoginUser();
 
         eventsInput.Clear();
         foreach(MidiScriptableObj midiData in midiDataArray) {

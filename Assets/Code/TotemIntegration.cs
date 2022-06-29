@@ -60,6 +60,10 @@ public class TotemIntegration
         GetLastLegacyRecord(OnFetchLegacyEvent);
     }
 
+    public void AddLegacyRecord(string data)
+    {
+        AddLegacyRecord(firstAvatar, data);
+    }
     public void AddLegacyRecord(ITotemAsset asset, string data)
     {
         totemDB.AddLegacyRecord(asset, data, (record) =>
