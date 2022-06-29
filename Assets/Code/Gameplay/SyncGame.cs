@@ -42,7 +42,7 @@ public class SyncGame : MonoBehaviour
     private PlaybackEvent[] events;
     
     // editor dependencies:
-    [SerializeField] private GameConfig gameConfig;
+    [SerializeField] public GameConfig gameConfig;
     [SerializeField] private FactoryLine[] factoryLines;
     [SerializeField] private FactoryWorker[] factoryWorkers;
 
