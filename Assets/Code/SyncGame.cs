@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TotemEntities;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SyncGame : MonoBehaviour
 {
@@ -14,19 +16,18 @@ public class SyncGame : MonoBehaviour
     // events:
     private PlaybackEvent[] events;
     
-    // deps:
-    [SerializeField]
-    private GameConfig gameConfig;
+    // editor dependencies:
+    [SerializeField] private GameConfig gameConfig;
+    [SerializeField] private FactoryLine[] factoryLines;
+    [SerializeField] private FactoryWorker[] factoryWorkers;
 
-    [SerializeField]
-    private FactoryLine[] factoryLines;
-    
-    [SerializeField]
-    private FactoryWorker[] factoryWorkers;
+    // runtime dependencies:
+    private TotemIntegration totemIntegration;
 
     // gameplay status
     private float fakePlayback;
     private int nextEventIndex;
+    private int loopCount = 0;
 
     // Gets float array of note start times and line identifier and creates the eventsInput list.
     public void WritePlaybackEvents (List<float> noteTimes, int line)
@@ -45,6 +46,10 @@ public class SyncGame : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        totemIntegration = new TotemIntegration();
+        totemIntegration.Init();
+        //totemIntegration.LoginUser();
+
         eventsInput.Clear();
         foreach(MidiScriptableObj midiData in midiDataArray) {
             WritePlaybackEvents(midiData.noteStartTimes, midiData.typeID);
@@ -119,7 +124,7 @@ public class SyncGame : MonoBehaviour
         }
     }
 
-    private int loopCount = 0;
+
     private void MaybeStartNextEvent()
     {
         if (nextEventIndex >= events.Length) {
