@@ -642,6 +642,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1942466306}
     - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: midiDataArray.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f86d3e74f75e60643817dba07e2725a9, type: 2}
+    - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
       propertyPath: factoryWorkers.Array.data[0]
       value: 
       objectReference: {fileID: 1855123843}
