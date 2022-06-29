@@ -10,16 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 874b46820258dfd4a8e2914c005bac2f, type: 3}
-  m_Name: MidiData_Mid
+  m_Name: MidiData_Top 1
   m_EditorClassIdentifier: 
-  myType: 1
-  typeID: 1
+  myType: 0
+  typeID: 0
   noteStartTimes:
-  - 0.33333334
-  - 1.3333334
-  - 1.6666666
-  - 2
-  - 3.3333333
-  - 3.6666667
-  - 4
-  - 5
+  - 0
+  - 0.6666667
+  - 2.3333333
+  - 2.6666667
+  - 4.3333335
