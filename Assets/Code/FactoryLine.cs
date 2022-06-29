@@ -20,8 +20,8 @@ public class FactoryLine : MonoBehaviour
     private Transform startPoint;
     private Transform endPoint;
     
-    private List<GameObject> activeItems = new List<GameObject>();
-    private List<GameObject> inactiveItems = new List<GameObject>();
+    private List<FactoryItem> activeItems = new List<FactoryItem>();
+    private List<FactoryItem> inactiveItems = new List<FactoryItem>();
 
     private void Start()
     {
@@ -31,14 +31,14 @@ public class FactoryLine : MonoBehaviour
 
     public void SpawnNewItem()
     {
-        var item = GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity);
-        activeItems.Add(item);
+        var itemGameObject = GameObject.Instantiate(itemPrefab, startPoint.position, Quaternion.identity);
+        activeItems.Add(itemGameObject.GetComponent<FactoryItem>());
         
         //var color = new Color(1f, 1f, 1f, 1f);
         //color.r = UnityEngine.Random.Range(0f, 1f);
         //color.g = UnityEngine.Random.Range(0f, 1f);
         //color.b = UnityEngine.Random.Range(0f, 1f);
-        //item.GetComponent<SpriteRenderer>().color = color;
+        //itemGameObject.GetComponent<SpriteRenderer>().color = color;
     }
 
     private void Update()
@@ -50,6 +50,7 @@ public class FactoryLine : MonoBehaviour
         foreach (var item in itemsToUpdate) {
 
             if (item.transform.position.x >= endPoint.position.x) {
+                ScoreItemOnEnd(item);
                 DisableItem(item);
             }
         }
@@ -59,14 +60,14 @@ public class FactoryLine : MonoBehaviour
     {
         if (activeItems.Count <= 0)
             return;
-        foreach (GameObject item in activeItems) {
+        foreach (var item in activeItems) {
             item.transform.position += Vector3.right * lineSpeed * deltaTime;
         }
     }
 
     public FactoryItem[] GetAllActiveItems()
     {
-        return activeItems.Select(x => x.GetComponent<FactoryItem>()).ToArray();
+        return activeItems.ToArray();
     }
 
     private void RespawnAll()
@@ -75,24 +76,29 @@ public class FactoryLine : MonoBehaviour
             return;
 
         var toEnable = inactiveItems.ToArray();
-        foreach (GameObject item in toEnable) {
+        foreach (var item in toEnable) {
             RespawnItem(item);
         }
     }
 
-    private void RespawnItem(GameObject item)
+    private void RespawnItem(FactoryItem item)
     {
         activeItems.Add(item);
         inactiveItems.Remove(item);
-        item.SetActive(true);
+        item.gameObject.SetActive(true);
         item.transform.position = startPoint.position;
     }
     
-    private void DisableItem(GameObject item)
+    private void DisableItem(FactoryItem item)
     {
         item.GetComponent<FactoryItem>().Reset();
         activeItems.Remove(item);
         inactiveItems.Add(item);
-        item.SetActive(false);
+        item.gameObject.SetActive(false);
+    }
+
+    private void ScoreItemOnEnd(FactoryItem item)
+    {
+            
     }
 }
