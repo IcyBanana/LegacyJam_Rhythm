@@ -12,14 +12,16 @@ public class FactoryLine : MonoBehaviour
     /// Keeps a list of all active (and later inactive - see pooling) items on that specific line.
     /// Destroys/Pools items that reach the end of the line and checks their status.
 
-    [SerializeField]
-    private GameObject itemPrefab;
-    [SerializeField]
-    private float lineSpeed = 1f;
+    // Events:
+    public Action<FactoryItem> ScoreItemOnReachEnd;
 
+    // Dependencies:
+    [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private float lineSpeed = 1f;
     private Transform startPoint;
     private Transform endPoint;
     
+    // Status;
     private List<FactoryItem> activeItems = new List<FactoryItem>();
     private List<FactoryItem> inactiveItems = new List<FactoryItem>();
 
@@ -50,7 +52,7 @@ public class FactoryLine : MonoBehaviour
         foreach (var item in itemsToUpdate) {
 
             if (item.transform.position.x >= endPoint.position.x) {
-                ScoreItemOnEnd(item);
+                ScoreItemOnReachEnd.Invoke(item);
                 DisableItem(item);
             }
         }
@@ -95,10 +97,5 @@ public class FactoryLine : MonoBehaviour
         activeItems.Remove(item);
         inactiveItems.Add(item);
         item.gameObject.SetActive(false);
-    }
-
-    private void ScoreItemOnEnd(FactoryItem item)
-    {
-            
     }
 }

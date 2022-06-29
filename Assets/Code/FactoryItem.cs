@@ -10,13 +10,6 @@ public class FactoryItem : MonoBehaviour
     /// Conditions: Must be "worked" on a specific number of times 'n'. If worked on less or more than 'n', will be Unfinished, otherwise Finished.
     /// Can only be "worked" on when inside a worker's trigger on the line.
 
-    public enum ItemCondition
-    {
-        Raw,
-        Finished,
-        Ruined,
-    }
-
     [SerializeField]
     private ItemCondition myCondition;
 
@@ -59,4 +52,11 @@ public class FactoryItem : MonoBehaviour
             spriteRenderer.color = Color.red;
         }
     }
+}
+
+public enum ItemCondition
+{
+    Raw,
+    Finished,
+    Ruined,
 }

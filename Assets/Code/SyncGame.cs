@@ -9,11 +9,11 @@ using UnityEngine.Events;
 /*
 
   Tasks:
-- [ ] Score when objects get to end + score field
+- [X] Score when objects get to end + score field
 - [ ] Score effect when objects get to line end
 - [ ] Worker animation for processing (cloud)
 - [ ] Worker animation for 180 turns
-- [ ] Intro screen with "Log In" and "Don't log in" buttons
+- [ ] Intro screen with "Log In" and "Don't log in" buttons - also with help on the SCORING system
 - [ ] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
 - [ ] If getting a very bad score for a while - move into "YOU'RE FIRED" scene. Button to restart game
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
@@ -48,12 +48,45 @@ public class SyncGame : MonoBehaviour
     [SerializeField] private FactoryWorker[] factoryWorkers;
 
     // runtime dependencies:
+    private GameUI gameUI;
     private TotemIntegration totemIntegration;
 
     // gameplay status
     private float fakePlayback;
     private int nextEventIndex;
     private int loopCount = 0;
+    private int score;
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        score = 0;
+        gameUI = FindObjectOfType<GameUI>();
+        gameUI.SetScore(score);
+
+        totemIntegration = new TotemIntegration();
+        totemIntegration.Init();
+        //totemIntegration.LoginUser();
+
+        eventsInput.Clear();
+        foreach(MidiScriptableObj midiData in midiDataArray) {
+            WritePlaybackEvents(midiData.noteStartTimes, midiData.typeID);
+        }
+        SortEventsAscending();
+        events = eventsInput.ToArray();
+
+        foreach (var factoryWorker in factoryWorkers) {
+            factoryWorker.Init(gameConfig);
+        }
+
+        foreach (var line in factoryLines) {
+            line.ScoreItemOnReachEnd += ScoreItemOnReachEnd;
+        }
+        
+
+        fakePlayback = -1f;
+        nextEventIndex = 0;
+    }
 
     // Gets float array of note start times and line identifier and creates the eventsInput list.
     public void WritePlaybackEvents (List<float> noteTimes, int line)
@@ -68,28 +101,23 @@ public class SyncGame : MonoBehaviour
         }
     }
 
-
-    // Start is called before the first frame update
-    private void Start()
+    private void ScoreItemOnReachEnd(FactoryItem item)
     {
-        totemIntegration = new TotemIntegration();
-        totemIntegration.Init();
-        //totemIntegration.LoginUser();
-
-        eventsInput.Clear();
-        foreach(MidiScriptableObj midiData in midiDataArray) {
-            WritePlaybackEvents(midiData.noteStartTimes, midiData.typeID);
+        int scoreToAdd = 0;
+        var condition = item.GetCondition();
+        switch (condition) {
+            case ItemCondition.Raw:
+                scoreToAdd = -2;
+                break;
+            case ItemCondition.Finished:
+                scoreToAdd = +5;
+                break;
+            case ItemCondition.Ruined:
+                scoreToAdd = -8;
+                break;
         }
-        SortEventsAscending();
-        events = eventsInput.ToArray();
-
-        foreach (FactoryWorker factoryWorker in factoryWorkers) {
-            factoryWorker.Init(gameConfig);
-        }
-
-
-        fakePlayback = -1f;
-        nextEventIndex = 0;
+        score += scoreToAdd;
+        gameUI.SetScore(score);
     }
 
     // Update is called once per frame
