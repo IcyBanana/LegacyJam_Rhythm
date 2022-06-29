@@ -243,7 +243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4107841566632585965, guid: 788f3fb2bca839c29a767df31de7f1c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.54
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4107841566632585965, guid: 788f3fb2bca839c29a767df31de7f1c5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -424,7 +424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4107841566632585965, guid: 788f3fb2bca839c29a767df31de7f1c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.44
+      value: 5.72
       objectReference: {fileID: 0}
     - target: {fileID: 4107841566632585965, guid: 788f3fb2bca839c29a767df31de7f1c5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -514,7 +514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4107841566632585965, guid: 788f3fb2bca839c29a767df31de7f1c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.67
+      value: -4.21
       objectReference: {fileID: 0}
     - target: {fileID: 4107841566632585965, guid: 788f3fb2bca839c29a767df31de7f1c5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -612,6 +612,10 @@ PrefabInstance:
     - target: {fileID: 4915124845769175906, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
       propertyPath: m_Name
       value: SyncGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: workerCooldownTime
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
       propertyPath: factoryLines.Array.size
