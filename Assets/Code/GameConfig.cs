@@ -22,16 +22,16 @@ public class GameConfig : ScriptableObject
     public GameObject itemPrefab;
 
     [Header("Graphics")]
-    public Sprite spriteRaw;
-    public Sprite spriteFinished;
-    public Sprite spriteRuined;
+    public Sprite[] spriteRaw;
+    public Sprite[] spriteFinished;
+    public Sprite[] spriteRuined;
 
-    public Sprite GetSprite(ItemCondition condition)
+    public Sprite GetSprite(ItemCondition condition, int index)
     {
         switch (condition) {
-            case ItemCondition.Raw: return spriteRaw;
-            case ItemCondition.Finished: return spriteFinished;
-            case ItemCondition.Ruined: return spriteRuined;
+            case ItemCondition.Raw: return spriteRaw[index];
+            case ItemCondition.Finished: return spriteFinished[index];
+            case ItemCondition.Ruined: return spriteRuined[index];
             default: return null;
         }
     }
