@@ -6,17 +6,22 @@ using TMPro;
 using TotemEntities;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
     [SerializeField] private GameObject scoreEffectPrefab;
     [SerializeField] private Vector3 scoreEffectVelocity;
     [SerializeField] private TextMeshProUGUI scoreField;
-    
+    [SerializeField] private Image bossFaceImage;
+
+    private GameConfig config;
+
     private List<GameObject> scoreEffects;
 
-    private void Start()
+    public void Init(GameConfig config)
     {
+        this.config = config;
         scoreEffects = new List<GameObject>();
     }
     
@@ -31,10 +36,17 @@ public class GameUI : MonoBehaviour
         }
     }
 
-
     public void SetScoreDisplay(int score)
     {
         scoreField.text = $"{score}";
+
+        var bossFace = config.bossFaceStates[0].bossFace;
+        foreach (var faceStates in config.bossFaceStates) {
+            if (score >= faceStates.minThreshold) {
+                bossFace = faceStates.bossFace;
+            }
+        }
+        bossFaceImage.sprite = bossFace;
     }
 
     public void AddScoreEffect(int scoreToAdd, Vector3 position)

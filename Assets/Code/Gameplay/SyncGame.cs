@@ -15,7 +15,7 @@ using UnityEngine.Events;
 - [X] Factory Line art + Animation
 - [X] Intro screen with "Log In"
 - [X] Background art
-- [ ] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
+- [X] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
 - [ ] If getting a very bad score for a while - move into "YOU'RE FIRED" scene. Button to restart game
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
 - [ ] Send the score as LEGACY EVENT when any GameOver is reached
@@ -60,6 +60,7 @@ public class SyncGame : MonoBehaviour
     {
         score = 0;
         gameUI = FindObjectOfType<GameUI>();
+        gameUI.Init(gameConfig);
         gameUI.SetScoreDisplay(score);
         
         eventsInput.Clear();
@@ -102,13 +103,13 @@ public class SyncGame : MonoBehaviour
         var condition = item.GetCondition();
         switch (condition) {
             case ItemCondition.Raw:
-                scoreToAdd = -2;
+                scoreToAdd = gameConfig.scoreOnRaw;
                 break;
             case ItemCondition.Finished:
-                scoreToAdd = +5;
+                scoreToAdd = gameConfig.scoreOnFinished;
                 break;
             case ItemCondition.Ruined:
-                scoreToAdd = -5;
+                scoreToAdd = gameConfig.scoreOnRuined;
                 break;
         }
         score += scoreToAdd;

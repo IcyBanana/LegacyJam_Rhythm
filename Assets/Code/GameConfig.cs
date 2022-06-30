@@ -5,15 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/GameConfig", order = 1)]
 public class GameConfig : ScriptableObject
 {
-    [Header("Prefabs")]
-    public GameObject itemPrefab;
-
     [Header("Gameplay and balance")]
     public float factoryLineSpeed;
     public float workerCooldownTime;
     public float workerActivateDistanceX;
     public float workerActivateDistanceY;
     
+    [Header("Scoring")]
+    public int scoreOnRaw;
+    public int scoreOnFinished;
+    public int scoreOnRuined;
+    public BossFaceState[] bossFaceStates;
+
+    [Header("Prefabs")]
+    public GameObject itemPrefab;
+
     [Header("Graphics")]
     public Sprite spriteRaw;
     public Sprite spriteFinished;
@@ -28,4 +34,11 @@ public class GameConfig : ScriptableObject
             default: return null;
         }
     }
+}
+
+[Serializable]
+public class BossFaceState
+{
+    public Sprite bossFace;
+    public int minThreshold;
 }
