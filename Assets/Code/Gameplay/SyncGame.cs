@@ -238,7 +238,17 @@ public class SyncGame : MonoBehaviour
         }
 
         if (nextEventIndex >= events.Length -1) {
-            GameOver();
+            if (score >= 500) {
+                foreach (var line in factoryLines) {
+                    line.HideAll();
+                }
+                gameUI.ShowVictory();
+                GameOver();
+            } else {
+                gameOverParticleEffect.Play();
+                gameUI.ShowGameOver();
+                GameOver();
+            }
         }
     }
 
