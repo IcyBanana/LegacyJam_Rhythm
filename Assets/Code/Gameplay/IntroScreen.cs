@@ -11,9 +11,11 @@ public class IntroScreen : MonoBehaviour
 {
     public static TotemIntegration totemIntegration;
     public static bool totemLoginSuccessful;
+    public static int industrialLegacyEventValue;
     public static int renaissanceLegacyEventValue;
     
     private bool startedLoginProcess;
+    private int loadedVars = 0;
 
     public IntroScreen()
     {
@@ -29,16 +31,37 @@ public class IntroScreen : MonoBehaviour
 
         totemIntegration = new TotemIntegration();
         totemIntegration.Init();
-        totemIntegration.OnLoginSucceededAndLoaded += OnLogin;
+        totemIntegration.OnLoginSucceededAndLoadedIndustrial += OnGotValueIndustrial;
+        totemIntegration.OnLoginSucceededAndLoadedRenaissance += OnGotValueRenaissance;
         totemIntegration.OnLoginFailed += OnLoginFail;
         totemIntegration.LoginUser();
     }
 
-    private void OnLogin(int val)
+    private void OnGotValueIndustrial(int val)
+    {
+        totemLoginSuccessful = true;
+        industrialLegacyEventValue = val;
+        SceneManager.LoadScene("Game");
+
+        loadedVars++;
+
+        if (loadedVars == 2) {
+            loadedVars = 999;
+            SceneManager.LoadScene("Game");
+        }
+    }
+
+    private void OnGotValueRenaissance(int val)
     {
         totemLoginSuccessful = true;
         renaissanceLegacyEventValue = val;
-        SceneManager.LoadScene("Game");
+        
+        loadedVars++;
+
+        if (loadedVars == 2) {
+            loadedVars = 999;
+            SceneManager.LoadScene("Game");
+        }
     }
 
     public void OnLoginFail()

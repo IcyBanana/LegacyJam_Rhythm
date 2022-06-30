@@ -20,17 +20,18 @@ using UnityEngine.Events;
 - [X] Add extra starting score based on read legacy events from Renaissance
 - [X] Set new font for texts
 - [X] Add letters on their hats
-- [ ] Game over Button to restart game
-- [ ] Add help about the SCORING system in the Intro screen
-- [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
+- [X] Soundtrack
 - [ ] Send the score as LEGACY EVENT when any GameOver is reached
-- [ ] Worker animation for 180 turns
-- [ ] Add some FactoryItems with 4 states (not just 3)
-- [ ] Soundtrack + Midi
+- [ ] Working MIDI conversion
+- [ ] Game over Button to restart game
+- [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
+- [ ] Add help about the SCORING system in the Intro screen
 ----- Optional ------
 - [ ] Stun/Advanced cooldown system
 - [ ] PPFX
 - [ ] Artistic Shaders
+- [ ] Add some FactoryItems with 4 states (not just 3)
+- [ ] Worker animation for 180 turns
 
 */
 
@@ -131,7 +132,20 @@ public class SyncGame : MonoBehaviour
         if (score < gameConfig.scoreToGetFired) {
             gameOverParticleEffect.Play();
             gameUI.ShowGameOver();
-            gameOver = true;
+            GameOver();
+        }
+    }
+
+    private void GameOver()
+    {
+        gameOver = true;
+        
+        if (IntroScreen.totemLoginSuccessful) {
+            if (score > IntroScreen.industrialLegacyEventValue) {
+                Debug.Log($"Setting totem legacy event to {score}");
+                var legacyEventNum = Mathf.FloorToInt(score / 20f);
+                IntroScreen.totemIntegration.AddLegacyRecord("" + legacyEventNum);
+            }
         }
     }
 

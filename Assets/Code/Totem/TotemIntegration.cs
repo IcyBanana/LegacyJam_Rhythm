@@ -9,7 +9,7 @@ public class TotemIntegration
 {
     ///Id of your game
     ///Used for legacy records identification
-    private string _gameId = "legacyjam22-industrial";
+    private string industrialGameId = "legacyjam22-industrial";
     private string legacyGameIdInput = "legacyjam22-renaissance";
 
     private string _accessToken;
@@ -20,19 +20,19 @@ public class TotemIntegration
     private string _publicKey;
 
     public Action OnLoginFailed;
-    public Action<int> OnLoginSucceededAndLoaded;
+    public Action<int> OnLoginSucceededAndLoadedIndustrial;
+    public Action<int> OnLoginSucceededAndLoadedRenaissance;
 
     public void Init()
     {
         //Initialize TotemDB
-        totemDB = new TotemDB(_gameId);
+        totemDB = new TotemDB(industrialGameId);
 
         //Subscribe to the events
         totemDB.OnSocialLoginCompleted.AddListener(OnTotemUserLoggedIn);
         totemDB.OnUserProfileLoaded.AddListener(OnUserProfileLoaded);
         totemDB.OnAvatarsLoaded.AddListener(OnAvatarsLoaded);
         totemDB.OnAvatarsLoaded.AddListener(OnAvatarsLoaded);
-        //legacyGameIdInput.onEndEdit.AddListener(OnGameIdInputEndEdit);
     }
     
     public void LoginUser()
@@ -40,7 +40,6 @@ public class TotemIntegration
         //Authenticate user through social login in web browser
         totemDB.AuthenticateCurrentUser();
     }
-
 
     private void OnTotemUserLoggedIn(TotemAccountGateway.SocialLoginResponse loginResult)
     {
@@ -61,7 +60,8 @@ public class TotemIntegration
         //Reference the first Avatar in the list
         firstAvatar = avatars[0];
 
-        GetLastLegacyRecord(OnFetchLegacyEvent);
+        GetLastLegacyRecord(OnFetchLegacyEventIndustrial, industrialGameId);
+        GetLastLegacyRecord(OnFetchLegacyEventRenaissance, legacyGameIdInput);
     }
 
     public void AddLegacyRecord(string data)
@@ -75,11 +75,11 @@ public class TotemIntegration
             Debug.Log("New legacy record data:" + record.data);
         });
     }
-    public void GetLegacyRecords(ITotemAsset asset, UnityAction<List<TotemLegacyRecord>> onSuccess)
+    public void GetLegacyRecords(ITotemAsset asset, UnityAction<List<TotemLegacyRecord>> onSuccess, string gameId)
     {
-        totemDB.GetLegacyRecords(asset, onSuccess, legacyGameIdInput);
+        totemDB.GetLegacyRecords(asset, onSuccess, gameId);
     }
-    public void GetLastLegacyRecord(UnityAction<TotemLegacyRecord> onSuccess)
+    public void GetLastLegacyRecord(UnityAction<TotemLegacyRecord> onSuccess, string gameId)
     {
         GetLegacyRecords(firstAvatar, (records) => {
             if (records.Count > 0) {
@@ -87,12 +87,12 @@ public class TotemIntegration
             } else {
                 onSuccess.Invoke(null);
             }
-        });
+        }, gameId);
     }
     
-    private void OnFetchLegacyEvent(TotemLegacyRecord lastRecord)
+    private void OnFetchLegacyEventRenaissance(TotemLegacyRecord lastRecord)
     {
-        Debug.Log("OnFetchLegacyEvent");
+        Debug.Log("OnFetchLegacyEventRenaissance");
         int result = -1;
 
         if (lastRecord == null) {
@@ -102,6 +102,21 @@ public class TotemIntegration
             var record = Int32.TryParse(lastRecord.data, out result);
         }
 
-        OnLoginSucceededAndLoaded.Invoke(result);
+        OnLoginSucceededAndLoadedRenaissance.Invoke(result);
+    }
+
+    private void OnFetchLegacyEventIndustrial(TotemLegacyRecord lastRecord)
+    {
+        Debug.Log("OnFetchLegacyEventIndustrial");
+        int result = -1;
+
+        if (lastRecord == null) {
+            Debug.Log("No legacy events found");
+        } else {
+            Debug.Log(lastRecord.data);
+            var record = Int32.TryParse(lastRecord.data, out result);
+        }
+
+        OnLoginSucceededAndLoadedIndustrial.Invoke(result);
     }
 }
