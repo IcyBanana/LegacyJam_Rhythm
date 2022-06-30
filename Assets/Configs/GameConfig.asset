@@ -33,9 +33,12 @@ MonoBehaviour:
   spriteRaw:
   - {fileID: 21300000, guid: d59f6d5959444714fbafeb5d316db80a, type: 3}
   - {fileID: 21300000, guid: c8caf46fb60311442b540a15ccbc9355, type: 3}
+  - {fileID: 21300000, guid: 85bc110e9f8f2504388d3525170e676d, type: 3}
   spriteFinished:
   - {fileID: 21300000, guid: 3f04cd7b75ef43d44a21efbcfa6d2906, type: 3}
   - {fileID: 21300000, guid: a711cd4d7625ae4458eb30cccda7890b, type: 3}
+  - {fileID: 21300000, guid: 48a40a6f24c4dc44288cb1462db579bd, type: 3}
   spriteRuined:
   - {fileID: 21300000, guid: 0e355dfbbb546974ea68c0974acb9eb1, type: 3}
   - {fileID: 21300000, guid: 0d902af997fe5c849954abb94ee00c66, type: 3}
+  - {fileID: 21300000, guid: 241980a9d186aa24c9281dc251b899a5, type: 3}
