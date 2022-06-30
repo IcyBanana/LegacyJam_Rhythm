@@ -21,11 +21,11 @@ using UnityEngine.Events;
 - [X] Set new font for texts
 - [X] Add letters on their hats
 - [X] Soundtrack
-- [ ] Send the score as LEGACY EVENT when any GameOver is reached
-- [ ] Working MIDI conversion
-- [ ] Game over Button to restart game
+- [X] Send the score as LEGACY EVENT when any GameOver is reached
+- [X] Working MIDI conversion
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
 - [ ] Add help about the SCORING system in the Intro screen
+- [ ] Game over Button to restart game
 ----- Optional ------
 - [ ] Stun/Advanced cooldown system
 - [ ] PPFX
@@ -235,6 +235,11 @@ public class SyncGame : MonoBehaviour
                     worker.StartCooldown(time);
                 }
             }
+        }
+
+
+        if (events.Length < 1) {
+            GameOver();
         }
     }
 
