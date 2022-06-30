@@ -648,8 +648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2287f2c46364b6947aaaf9ea6d0eb5ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bakeTarget: {fileID: 11400000, guid: 08089520c66ee3d4095322470c4f99a5, type: 2}
-  filePath: \EditorMidiStuff\MidiBot.mid
+  bakeTarget: {fileID: 11400000, guid: f86d3e74f75e60643817dba07e2725a9, type: 2}
+  filePath: \EditorMidiStuff\MidiTop.mid
   BPM: 110
 --- !u!4 &673336761
 Transform:
