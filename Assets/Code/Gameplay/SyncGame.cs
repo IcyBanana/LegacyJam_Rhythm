@@ -16,7 +16,9 @@ using UnityEngine.Events;
 - [X] Intro screen with "Log In"
 - [X] Background art
 - [X] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
-- [ ] If getting a very bad score for a while - move into "YOU'RE FIRED" scene. Button to restart game
+- [X] If getting a very bad score for a while - move into "YOU'RE FIRED" scene.
+- [ ] Game over Button to restart game
+- [ ] Set new font for texts
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
 - [ ] Send the score as LEGACY EVENT when any GameOver is reached
 - [ ] Add special FactoryItems based on read legacy events from Renaissance
@@ -45,15 +47,18 @@ public class SyncGame : MonoBehaviour
     [SerializeField] public GameConfig gameConfig;
     [SerializeField] private FactoryLine[] factoryLines;
     [SerializeField] private FactoryWorker[] factoryWorkers;
+    [SerializeField] private ParticleSystem gameOverParticleEffect;
 
     // Runtime dependencies:
     private GameUI gameUI;
 
     // Gameplay status
+    private bool gameOver;
     private float fakePlaybackTime;
     private int nextEventIndex;
     private int loopCount = 0;
     private int score;
+
 
     // Start is called before the first frame update
     private void Start()
@@ -115,19 +120,32 @@ public class SyncGame : MonoBehaviour
         score += scoreToAdd;
         gameUI.SetScoreDisplay(score);
         gameUI.AddScoreEffect(scoreToAdd, item.transform.position);
+
+        if (score < gameConfig.scoreToGetFired) {
+            gameOverParticleEffect.Play();
+            gameUI.ShowGameOver();
+            gameOver = true;
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (gameOver) {
+            return;
+        }
+
         fakePlaybackTime += Time.deltaTime;
 
         var time = GetPlaybackTime();
 
         MaybeStartNextEvent();
 
-        foreach (FactoryWorker worker in factoryWorkers)
-        {
+        foreach (var line in factoryLines) {
+            line.DoUpdate();
+        }
+
+        foreach (var worker in factoryWorkers) {
             if (!worker.OnCooldown(time)) {
                 worker.EndCooldown();
             }

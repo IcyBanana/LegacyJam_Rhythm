@@ -49,7 +49,7 @@ public class FactoryLine : MonoBehaviour
         //itemGameObject.GetComponent<SpriteRenderer>().color = color;
     }
 
-    private void Update()
+    public void DoUpdate()
     {
         MoveItems(Time.deltaTime);
         // RespawnAll();

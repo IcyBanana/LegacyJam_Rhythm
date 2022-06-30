@@ -20,9 +20,6 @@ public class FactoryWorker : MonoBehaviour
         SetRotation();
     }
     
-    // Update is called once per frame
-    private void Update() { }
-
     public void FlipVerticalDirection()
     {
         verticalDirection *= -1;

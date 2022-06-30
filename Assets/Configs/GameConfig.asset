@@ -16,9 +16,10 @@ MonoBehaviour:
   workerCooldownTime: 0.15
   workerActivateDistanceX: 0.9
   workerActivateDistanceY: 2
-  scoreOnRaw: -5
+  scoreOnRaw: -10
   scoreOnFinished: 20
-  scoreOnRuined: -10
+  scoreOnRuined: -20
+  scoreToGetFired: -100
   bossFaceStates:
   - bossFace: {fileID: -1842762151, guid: 42432f5579d0d86a98075ece2fe10f6f, type: 3}
     minThreshold: -999999

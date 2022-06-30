@@ -14,6 +14,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] private Vector3 scoreEffectVelocity;
     [SerializeField] private TextMeshProUGUI scoreField;
     [SerializeField] private Image bossFaceImage;
+    [SerializeField] private GameObject gameOver;
 
     private GameConfig config;
 
@@ -23,6 +24,7 @@ public class GameUI : MonoBehaviour
     {
         this.config = config;
         scoreEffects = new List<GameObject>();
+        gameOver.SetActive(false);
     }
     
     private void Update()
@@ -56,5 +58,10 @@ public class GameUI : MonoBehaviour
         scoreEffectGameObject.GetComponent<TextMeshProUGUI>().color = (scoreToAdd > 0 ? Color.green: Color.red);
         scoreEffectGameObject.GetComponent<TextMeshProUGUI>().text = effectText;
         scoreEffects.Add(scoreEffectGameObject);
+    }
+
+    public void ShowGameOver()
+    {
+        gameOver.SetActive(true);
     }
 }

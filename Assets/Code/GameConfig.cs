@@ -15,6 +15,7 @@ public class GameConfig : ScriptableObject
     public int scoreOnRaw;
     public int scoreOnFinished;
     public int scoreOnRuined;
+    public int scoreToGetFired;
     public BossFaceState[] bossFaceStates;
 
     [Header("Prefabs")]
