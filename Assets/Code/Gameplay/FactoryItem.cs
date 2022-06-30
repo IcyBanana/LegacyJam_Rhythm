@@ -61,9 +61,11 @@ public class FactoryItem : MonoBehaviour
     private void ChooseSpriteID () {
         float rand = Mathf.Pow(UnityEngine.Random.Range(0f, 1f), 2f);
         print(rand);
-        if(rand > 0.5f)
+        if(rand > 0.75f)
+            spriteID = 2;
+        else if(rand > 0.5f)   
             spriteID = 1;
-        else    
+        else 
             spriteID = 0;
     }
 
