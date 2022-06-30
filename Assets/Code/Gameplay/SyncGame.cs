@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TotemEntities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,17 +12,18 @@ using UnityEngine.Events;
 - [X] Score effect when objects get to line end
 - [X] Implement FactoryItem changing graphics (swapped sprites)
 - [X] Worker animation for processing (cloud)
-- [ ] Worker animation for 180 turns
-- [ ] Intro screen with "Log In" and "Don't log in" buttons - also with help on the SCORING system
+- [X] Factory Line art + Animation
+- [X] Intro screen with "Log In"
 - [ ] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
 - [ ] If getting a very bad score for a while - move into "YOU'RE FIRED" scene. Button to restart game
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
 - [ ] Send the score as LEGACY EVENT when any GameOver is reached
-- [ ] Add some FactoryItems with 4 states (not just 3)
 - [ ] Add special FactoryItems based on read legacy events from Renaissance
+- [ ] Worker animation for 180 turns
+- [ ] Add some FactoryItems with 4 states (not just 3)
 - [ ] Soundtrack + Midi
 - [ ] Background art
-- [ ] Factory Line art + Animation
+- [ ] Add help about the SCORING system in the Intro screen
 ----- Optional ------
 - [ ] Stun/Advanced cooldown system
 - [ ] PPFX
@@ -38,20 +38,19 @@ public class SyncGame : MonoBehaviour
 
     private List<PlaybackEvent> eventsInput = new List<PlaybackEvent>();
 
-    // events:
+    // Music events:
     private PlaybackEvent[] events;
     
-    // editor dependencies:
+    // Editor dependencies:
     [SerializeField] public GameConfig gameConfig;
     [SerializeField] private FactoryLine[] factoryLines;
     [SerializeField] private FactoryWorker[] factoryWorkers;
 
-    // runtime dependencies:
+    // Runtime dependencies:
     private GameUI gameUI;
-    private TotemIntegration totemIntegration;
 
-    // gameplay status
-    private float fakePlayback;
+    // Gameplay status
+    private float fakePlaybackTime;
     private int nextEventIndex;
     private int loopCount = 0;
     private int score;
@@ -62,11 +61,7 @@ public class SyncGame : MonoBehaviour
         score = 0;
         gameUI = FindObjectOfType<GameUI>();
         gameUI.SetScoreDisplay(score);
-
-        totemIntegration = new TotemIntegration();
-        totemIntegration.Init();
-        // totemIntegration.LoginUser();
-
+        
         eventsInput.Clear();
         foreach(MidiScriptableObj midiData in midiDataArray) {
             WritePlaybackEvents(midiData.noteStartTimes, midiData.typeID);
@@ -84,7 +79,7 @@ public class SyncGame : MonoBehaviour
         }
         
 
-        fakePlayback = -1f;
+        fakePlaybackTime = -1f;
         nextEventIndex = 0;
     }
 
@@ -124,7 +119,7 @@ public class SyncGame : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        fakePlayback += Time.deltaTime;
+        fakePlaybackTime += Time.deltaTime;
 
         var time = GetPlaybackTime();
 
@@ -211,7 +206,7 @@ public class SyncGame : MonoBehaviour
 
     private float GetPlaybackTime()
     {
-        return fakePlayback;
+        return fakePlaybackTime;
     }
     
     private FactoryItem[] GetAllActiveItems()

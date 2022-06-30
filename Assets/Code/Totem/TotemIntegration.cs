@@ -19,6 +19,9 @@ public class TotemIntegration
     private TotemAvatar firstAvatar;
     private string _publicKey;
 
+    public Action OnLoginFailed;
+    public Action<int> OnLoginSucceededAndLoaded;
+
     public void Init()
     {
         //Initialize TotemDB
@@ -27,6 +30,7 @@ public class TotemIntegration
         //Subscribe to the events
         totemDB.OnSocialLoginCompleted.AddListener(OnTotemUserLoggedIn);
         totemDB.OnUserProfileLoaded.AddListener(OnUserProfileLoaded);
+        totemDB.OnAvatarsLoaded.AddListener(OnAvatarsLoaded);
         totemDB.OnAvatarsLoaded.AddListener(OnAvatarsLoaded);
         //legacyGameIdInput.onEndEdit.AddListener(OnGameIdInputEndEdit);
     }
@@ -81,15 +85,23 @@ public class TotemIntegration
             if (records.Count > 0) {
                 onSuccess.Invoke(records[records.Count - 1]);
             } else {
-                Debug.Log("No legacy events found");
+                onSuccess.Invoke(null);
             }
         });
     }
+    
     private void OnFetchLegacyEvent(TotemLegacyRecord lastRecord)
     {
         Debug.Log("OnFetchLegacyEvent");
-        Debug.Log(lastRecord.data);
+        int result = -1;
+
+        if (lastRecord == null) {
+            Debug.Log("No legacy events found");
+        } else {
+            Debug.Log(lastRecord.data);
+            var record = Int32.TryParse(lastRecord.data, out result);
+        }
+
+        OnLoginSucceededAndLoaded.Invoke(result);
     }
-
-
 }
