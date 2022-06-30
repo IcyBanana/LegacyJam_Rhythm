@@ -18,7 +18,7 @@ using UnityEngine.Events;
 - [X] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
 - [X] If getting a very bad score for a while - move into "YOU'RE FIRED" scene.
 - [ ] Game over Button to restart game
-- [ ] Set new font for texts
+- [X] Set new font for texts
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
 - [ ] Send the score as LEGACY EVENT when any GameOver is reached
 - [ ] Add special FactoryItems based on read legacy events from Renaissance
