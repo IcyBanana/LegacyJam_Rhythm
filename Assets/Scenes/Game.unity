@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2287f2c46364b6947aaaf9ea6d0eb5ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bakeTarget: {fileID: 11400000, guid: f86d3e74f75e60643817dba07e2725a9, type: 2}
+  bakeTarget: {fileID: 11400000, guid: ba5d9ca55d393ff4ea5d04bd8cb51f8e, type: 2}
   filePath: \EditorMidiStuff\MidiTop.mid
   BPM: 110
 --- !u!4 &297370423
@@ -5552,6 +5552,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 901873354, guid: 00c3472d12cd90154803439c549a008e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 120.099976
+      objectReference: {fileID: 0}
+    - target: {fileID: 901873354, guid: 00c3472d12cd90154803439c549a008e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 107.08002
+      objectReference: {fileID: 0}
     - target: {fileID: 3659042837490369048, guid: 00c3472d12cd90154803439c549a008e, type: 3}
       propertyPath: m_Name
       value: GameUI
@@ -5807,9 +5815,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1942466306}
     - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: midiDataArray.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cdf575552d982f46a987cfd3ee328d7, type: 2}
+    - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: midiDataArray.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f1f8b1cb6b3238946964ef02ea3eb81d, type: 2}
+    - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
       propertyPath: midiDataArray.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: f86d3e74f75e60643817dba07e2725a9, type: 2}
+      objectReference: {fileID: 11400000, guid: ba5d9ca55d393ff4ea5d04bd8cb51f8e, type: 2}
     - target: {fileID: 4915124845769175907, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
       propertyPath: factoryWorkers.Array.data[0]
       value: 
