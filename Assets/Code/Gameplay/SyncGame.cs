@@ -17,13 +17,13 @@ using UnityEngine.Events;
 - [X] Background art
 - [X] Add Boss avatar in the corner in the UI - change face based on recent (or total) score
 - [X] If getting a very bad score for a while - move into "YOU'RE FIRED" scene.
-- [ ] Game over Button to restart game
+- [X] Add extra starting score based on read legacy events from Renaissance
 - [X] Set new font for texts
+- [ ] Game over Button to restart game
 - [ ] Add help about the SCORING system in the Intro screen
 - [ ] Add letters on their hats
 - [ ] When song ends - either get fired, or, go into a VICTORY screen (also button to restart game)
 - [ ] Send the score as LEGACY EVENT when any GameOver is reached
-- [ ] Add special FactoryItems based on read legacy events from Renaissance
 - [ ] Worker animation for 180 turns
 - [ ] Add some FactoryItems with 4 states (not just 3)
 - [ ] Soundtrack + Midi
@@ -65,6 +65,12 @@ public class SyncGame : MonoBehaviour
     private void Start()
     {
         score = 0;
+        if (IntroScreen.totemLoginSuccessful) {
+            if (IntroScreen.renaissanceLegacyEventValue == 1) {
+                score = 150;
+            }
+        }
+        
         gameUI = FindObjectOfType<GameUI>();
         gameUI.Init(gameConfig);
         gameUI.SetScoreDisplay(score);
