@@ -238,7 +238,7 @@ public class SyncGame : MonoBehaviour
         }
 
 
-        if (events.Length < 1) {
+        if (nextEventIndex >= events.Length -1) {
             GameOver();
         }
     }
