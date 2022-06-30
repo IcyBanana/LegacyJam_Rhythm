@@ -7,6 +7,7 @@ public class FactoryWorker : MonoBehaviour
 {
     //deps:
     private GameConfig config;
+    [SerializeField] private GameObject hat;
 
     //gameplay status:
     public float cooldownUntil;
@@ -31,6 +32,7 @@ public class FactoryWorker : MonoBehaviour
     public void SetRotation()
     {
         transform.rotation = Quaternion.Euler(0, 0, 90 + verticalDirection * 90);
+        hat.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
 
