@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 297370423}
   - component: {fileID: 297370422}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MidiBake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,9 +198,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2287f2c46364b6947aaaf9ea6d0eb5ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bakeTarget: {fileID: 11400000, guid: 297e90e98f2222644bbd0ecdba5d91c0, type: 2}
-  filePath: \EditorMidiStuff\midi2.mid
-  BPM: 90
+  bakeTarget: {fileID: 11400000, guid: f86d3e74f75e60643817dba07e2725a9, type: 2}
+  filePath: \EditorMidiStuff\MidiTop.mid
+  BPM: 110
 --- !u!4 &297370423
 Transform:
   m_ObjectHideFlags: 0
@@ -5702,6 +5702,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 31372686, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: be3eec5991586c540ba737cc6c967a41, type: 3}
+    - target: {fileID: 31372686, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 31372687, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: offset
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 31372687, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
+      propertyPath: musicClip
+      value: 
+      objectReference: {fileID: 8300000, guid: be3eec5991586c540ba737cc6c967a41, type: 3}
     - target: {fileID: 4915124845769175904, guid: 5ecef28c603a7dbcbb09df3dc0c6dd38, type: 3}
       propertyPath: m_RootOrder
       value: 0
