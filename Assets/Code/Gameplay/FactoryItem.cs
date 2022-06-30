@@ -18,6 +18,8 @@ public class FactoryItem : MonoBehaviour
 
     private GameConfig config;
 
+    private int spriteID = 0;
+
     //
     // Public Methods
     // 
@@ -27,7 +29,7 @@ public class FactoryItem : MonoBehaviour
         this.config = config;
         spriteRenderer = GetComponent<SpriteRenderer>();
         Reset();
-        
+        ChooseSpriteID();
         UpdateItemGraphics();
     }
     
@@ -56,8 +58,17 @@ public class FactoryItem : MonoBehaviour
         UpdateItemGraphics();
     }
 
+    private void ChooseSpriteID () {
+        float rand = Mathf.Pow(UnityEngine.Random.Range(0f, 1f), 2f);
+        print(rand);
+        if(rand > 0.5f)
+            spriteID = 1;
+        else    
+            spriteID = 0;
+    }
+
     private void UpdateItemGraphics()
     {
-        spriteRenderer.sprite = config.GetSprite(myCondition);
+        spriteRenderer.sprite = config.GetSprite(myCondition, spriteID);
     }
 }
