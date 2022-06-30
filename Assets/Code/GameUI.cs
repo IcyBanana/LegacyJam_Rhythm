@@ -15,6 +15,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreField;
     [SerializeField] private Image bossFaceImage;
     [SerializeField] private GameObject gameOver;
+    [SerializeField] private GameObject victoryScreen;
 
     private GameConfig config;
 
@@ -25,6 +26,7 @@ public class GameUI : MonoBehaviour
         this.config = config;
         scoreEffects = new List<GameObject>();
         gameOver.SetActive(false);
+        victoryScreen.SetActive(false);
     }
     
     private void Update()
@@ -63,5 +65,10 @@ public class GameUI : MonoBehaviour
     public void ShowGameOver()
     {
         gameOver.SetActive(true);
+    }
+
+    public void ShowVictory()
+    {
+        victoryScreen.SetActive(true);
     }
 }

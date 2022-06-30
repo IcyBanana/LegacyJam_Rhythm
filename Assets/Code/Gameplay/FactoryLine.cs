@@ -104,4 +104,11 @@ public class FactoryLine : MonoBehaviour
         inactiveItems.Add(item);
         item.gameObject.SetActive(false);
     }
+
+    public void HideAll()
+    {
+        foreach (var item in activeItems.ToArray()) {
+            DisableItem(item);
+        }
+    }
 }
