@@ -12,6 +12,6 @@ public class MidiScriptableObj : ScriptableObject
     }
     public midiType myType;
     public int typeID;
-    public List<float> noteStartTimes;
+    public List<float> noteStartTimes = new List<float>();
 
 }
